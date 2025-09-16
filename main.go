@@ -9,6 +9,7 @@ import (
 	"github.com/alecthomas/kingpin/v2"
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"log"
 )
 
@@ -52,6 +53,11 @@ func newFiberApp() *fiber.App {
 		c.Set("Powered-By", "github.com/n0paleon/MemeCraft")
 		return c.Next()
 	})
+	app.Use(cors.New(cors.Config{
+		Next: func(c *fiber.Ctx) bool {
+			return true
+		},
+	}))
 
 	return app
 }
