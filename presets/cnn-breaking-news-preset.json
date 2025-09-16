@@ -1,0 +1,31 @@
+{
+  "name": "CNN Breaking News",
+  "id": "cnn-breaking-news-preset",
+  "base_image": "assets/base/cnn-breaking-news-preset.png",
+  "example_image": "https://files.catbox.moe/isk4p4.jpg",
+  "resize_mode": "fill",
+  "text_boxes": [
+    {
+      "name": "headline",
+      "x": 26.3,
+      "y": 943.2,
+      "width": 916,
+      "height": 71,
+      "max_chars": 60,
+      "font": "assets/fonts/BebasNeue-Regular.ttf",
+      "size": 46,
+      "line_spacing": 0.0,
+      "color": "#000000",
+      "align": "left",
+      "padding": 2,
+      "normalize": "toupper"
+    }
+  ],
+  "overlay": {
+    "x": 0,
+    "y": 0,
+    "width": 1080,
+    "height": 1080,
+    "rotate": 0
+  }
+}

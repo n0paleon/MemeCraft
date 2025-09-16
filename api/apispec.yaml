@@ -1,0 +1,162 @@
+openapi: 3.0.0
+info:
+  title: MemeCraft
+  version: 1.0.0
+  description: ''
+servers:
+  - url: '{{local}}'
+paths:
+  /presets/cnn-breaking-news-preset:
+    parameters: []
+    get:
+      summary: Get Preset by ID
+      tags: &ref_0
+        - Presets
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Date:
+              schema:
+                type: string
+              example: Tue, 16 Sep 2025 11:46:02 GMT
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Content-Length:
+              schema:
+                type: integer
+              example: '203'
+          description: Get Preset by ID
+  /presets:
+    parameters: []
+    get:
+      summary: Get All Presets
+      tags: *ref_0
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Date:
+              schema:
+                type: string
+              example: Tue, 16 Sep 2025 11:46:11 GMT
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Content-Length:
+              schema:
+                type: integer
+              example: '408'
+          description: Get All Presets
+  /presets/kompas-ig-preset/memes:
+    parameters: []
+    post:
+      summary: Kompas IG News
+      tags: &ref_1
+        - Generate
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Date:
+              schema:
+                type: string
+              example: Tue, 16 Sep 2025 11:40:21 GMT
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Content-Length:
+              schema:
+                type: integer
+              example: '97'
+          description: detik.com ig news
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                overlay:
+                  type: string
+                  format: uri
+                resize_mode:
+                  type: string
+                text:
+                  type: object
+                  properties:
+                    main-content:
+                      type: string
+            example:
+              overlay: https://nefu.life/4yrsaE.jpg
+              resize_mode: fill
+              text:
+                main-content: 'Kontol Gue '
+  /presets/cnn-breaking-news-preset/memes:
+    parameters: []
+    post:
+      summary: cnn breaking news
+      tags: *ref_1
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Date:
+              schema:
+                type: string
+              example: Tue, 16 Sep 2025 11:40:58 GMT
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Content-Length:
+              schema:
+                type: integer
+              example: '97'
+          description: cnn breaking news
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                overlay:
+                  type: string
+                  format: uri
+                resize_mode:
+                  type: string
+                text:
+                  type: object
+                  properties:
+                    headline:
+                      type: string
+            example:
+              overlay: https://nefu.life/3AUeLj.jpg
+              resize_mode: fill
+              text:
+                headline: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+  /upload:
+    parameters: []
+    post:
+      summary: UploadFile
+      tags: []
+      parameters: []
+      responses:
+        '200':
+          headers:
+            Date:
+              schema:
+                type: string
+              example: Tue, 16 Sep 2025 11:49:17 GMT
+            Content-Type:
+              schema:
+                type: string
+              example: application/json
+            Content-Length:
+              schema:
+                type: integer
+              example: '122'
+          description: Upload File 200 Response

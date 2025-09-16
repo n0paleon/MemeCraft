@@ -1,0 +1,46 @@
+{
+  "name": "Folkative Instagram Preset",
+  "id": "folkative-ig-preset",
+  "base_image": "assets/base/folkative-ig-preset-base.png",
+  "example_image": "https://files.catbox.moe/lucre0.jpg",
+  "resize_mode": "fill",
+  "text_boxes": [
+    {
+      "name": "headline",
+      "x": 18.6,
+      "y": 750,
+      "width": 1042,
+      "height": 547,
+      "max_chars": 78,
+      "font": "assets/fonts/Nimbus-Sans-Novus-W01-Regular.ttf",
+      "size": 107,
+      "line_spacing": 1.5,
+      "color": "#000000",
+      "align": "left",
+      "padding": 15,
+      "normalize": "normal"
+    },
+    {
+      "name": "media-name",
+      "x": 493.8,
+      "y": 1297,
+      "width": 567,
+      "height": 125,
+      "max_chars": 17,
+      "font": "assets/fonts/BebasKai.ttf",
+      "size": 85,
+      "line_spacing": 1.5,
+      "color": "#000000",
+      "align": "right",
+      "padding": 20,
+      "normalize": "toupper"
+    }
+  ],
+  "overlay": {
+    "x": 0,
+    "y": 0,
+    "width": 1080,
+    "height": 1440,
+    "rotate": 0
+  }
+}

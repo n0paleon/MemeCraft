@@ -1,0 +1,31 @@
+{
+  "name": "Kompas News Instagram",
+  "id": "kompas-ig-preset",
+  "base_image": "assets/base/kompas-ig-preset.png",
+  "example_image": "https://files.catbox.moe/vj9tmf.jpg",
+  "resize_mode": "fill",
+  "text_boxes": [
+    {
+      "name": "main-content",
+      "x": 135,
+      "y": 741,
+      "width": 805,
+      "height": 261,
+      "max_chars": 75,
+      "font": "assets/fonts/OpenSans-Bold.ttf",
+      "size": 50.0,
+      "line_spacing": 1.6,
+      "color": "#042644",
+      "align": "center",
+      "padding": 10,
+      "normalize": "normal"
+    }
+  ],
+  "overlay": {
+    "x": 0,
+    "y": 0,
+    "width": 1080,
+    "height": 880,
+    "rotate": 0
+  }
+}

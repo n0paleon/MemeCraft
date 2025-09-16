@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MemeCraft - Generator Meme</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .preset-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .error-shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<!-- Header -->
+<header class="gradient-bg text-white py-8">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-4xl font-bold mb-2">🎭 MemeCraft</h1>
+        <p class="text-xl opacity-90">Generator Meme Keren untuk Semua Preset</p>
+    </div>
+</header>
+
+<!-- Error Alert -->
+<div id="error-alert" class="container mx-auto px-4 pt-4 hidden">
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg error-shake">
+        <div class="flex items-center">
+            <div class="text-2xl mr-3">❌</div>
+            <div>
+                <p class="font-bold">Terjadi Kesalahan!</p>
+                <p id="error-message"></p>
+            </div>
+            <button onclick="hideErrorAlert()" class="ml-auto text-red-500 hover:text-red-700">
+                ✕
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+    <!-- Loading State -->
+    <div id="loading" class="text-center py-12">
+        <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+        <p class="mt-4 text-gray-600">Memuat preset...</p>
+    </div>
+
+    <!-- Preset Grid -->
+    <div id="preset-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="text-center py-12 hidden">
+        <div class="text-gray-400 text-8xl mb-4">📋</div>
+        <h2 class="text-2xl font-bold text-gray-600 mb-2">Belum Ada Preset</h2>
+        <p class="text-gray-500">Preset akan muncul di sini ketika tersedia</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-state" class="text-center py-12 hidden">
+        <div class="text-red-500 text-6xl mb-4">⚠️</div>
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Gagal Memuat Preset</h2>
+        <p id="error-detail" class="text-gray-600 mb-4"></p>
+        <button onclick="loadPresets()" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors">
+            🔄 Coba Lagi
+        </button>
+    </div>
+</main>
+
+<script>
+    const API_BASE_URL = 'http://127.0.0.1:3000'; // Ganti dengan URL API Anda
+    let presets = [];
+
+    // Fungsi untuk menampilkan error alert
+    function showErrorAlert(message) {
+        document.getElementById('error-message').textContent = message;
+        document.getElementById('error-alert').classList.remove('hidden');
+        setTimeout(() => hideErrorAlert(), 5000); // Auto hide after 5 seconds
+    }
+
+    // Fungsi untuk menyembunyikan error alert
+    function hideErrorAlert() {
+        document.getElementById('error-alert').classList.add('hidden');
+    }
+
+    // Fungsi untuk handle error response dari API
+    async function handleErrorResponse(response) {
+        try {
+            const errorData = await response.json();
+            return errorData.message || `HTTP Error ${response.status}: ${response.statusText}`;
+        } catch {
+            return `HTTP Error ${response.status}: ${response.statusText}`;
+        }
+    }
+
+    // Fungsi untuk memuat semua preset
+    async function loadPresets() {
+        try {
+            showLoading();
+            const response = await fetch(`${API_BASE_URL}/presets`);
+
+            if (!response.ok) {
+                const errorMessage = await handleErrorResponse(response);
+                throw new Error(errorMessage);
+            }
+
+            const data = await response.json();
+
+            // Handle berbagai format response dari API
+            if (Array.isArray(data)) {
+                presets = data;
+            } else if (data.data && Array.isArray(data.data)) {
+                presets = data.data;
+            } else if (typeof data === 'object') {
+                presets = [data];
+            } else {
+                presets = [];
+            }
+
+            displayPresets();
+
+        } catch (error) {
+            console.error('Error loading presets:', error);
+            showErrorState(error.message);
+            showErrorAlert(error.message);
+        }
+    }
+
+    // Fungsi untuk menampilkan loading
+    function showLoading() {
+        document.getElementById('loading').classList.remove('hidden');
+        document.getElementById('preset-grid').classList.add('hidden');
+        document.getElementById('empty-state').classList.add('hidden');
+        document.getElementById('error-state').classList.add('hidden');
+    }
+
+    // Fungsi untuk menampilkan error state
+    function showErrorState(message) {
+        document.getElementById('loading').classList.add('hidden');
+        document.getElementById('preset-grid').classList.add('hidden');
+        document.getElementById('empty-state').classList.add('hidden');
+        document.getElementById('error-state').classList.remove('hidden');
+        document.getElementById('error-detail').textContent = message;
+    }
+
+    // Fungsi untuk menampilkan preset
+    function displayPresets() {
+        const grid = document.getElementById('preset-grid');
+
+        if (presets.length === 0) {
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('preset-grid').classList.add('hidden');
+            document.getElementById('empty-state').classList.remove('hidden');
+            document.getElementById('error-state').classList.add('hidden');
+        } else {
+            grid.innerHTML = presets.map(preset => createPresetCard(preset)).join('');
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('preset-grid').classList.remove('hidden');
+            document.getElementById('empty-state').classList.add('hidden');
+            document.getElementById('error-state').classList.add('hidden');
+        }
+    }
+
+    // Fungsi untuk membuat card preset
+    function createPresetCard(preset) {
+        // Extract preset ID dari berbagai kemungkinan struktur
+        let presetId = preset.id || preset.name || 'unknown';
+
+        // Jika preset adalah string, gunakan sebagai ID
+        if (typeof preset === 'string') {
+            presetId = preset;
+        }
+
+        const presetName = preset.display_name || preset.title || presetId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        const description = preset.description || 'Template meme siap pakai';
+        const exampleImage = preset.example_image || preset.preview || 'https://via.placeholder.com/300x200?text=Preview+Meme';
+
+        return `
+            <div class="preset-card bg-white rounded-lg shadow-lg overflow-hidden cursor-pointer hover:shadow-xl transition-all"
+                 onclick="goToGenerator('${presetId}')">
+                <div class="relative">
+                    <img src="${exampleImage}" alt="${presetName}"
+                         class="w-full h-64 object-cover aspect-square"
+                         style="aspect-ratio: 1 / 1;"
+                         onerror="this.src='https://via.placeholder.com/300x300?text=No+Preview&bg=f0f0f0&color=999'">
+                    <div class="absolute top-2 right-2 bg-blue-500 text-white px-2 py-1 rounded text-xs font-mono">
+                        ${presetId}
+                    </div>
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
+                        ${presetName}
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">${presetName}</h3>
+                    <p class="text-gray-600 mb-4">${description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-500">Klik untuk mulai membuat</span>
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">🎨</span>
+                            <span class="text-blue-500 font-medium">→</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // Fungsi untuk pergi ke generator
+    function goToGenerator(presetId) {
+        if (presetId && presetId !== 'unknown') {
+            window.location.href = `generate.html?preset=${encodeURIComponent(presetId)}`;
+        } else {
+            showErrorAlert('Preset ID tidak valid');
+        }
+    }
+
+    // Inisialisasi saat halaman dimuat
+    window.addEventListener('DOMContentLoaded', loadPresets);
+</script>
+</body>
+</html>
