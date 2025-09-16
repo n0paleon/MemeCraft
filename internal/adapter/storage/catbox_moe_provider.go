@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
 	"io"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -38,6 +39,7 @@ func (s *CatboxMoeProvider) UploadBytes(ctx context.Context, data []byte) (*port
 		Post(s.ApiUrl)
 
 	if err != nil {
+		log.Printf("upload file error: %v", err)
 		return nil, err
 	}
 
@@ -57,6 +59,7 @@ func (s *CatboxMoeProvider) UploadBytes(ctx context.Context, data []byte) (*port
 }
 
 func NewCatboxMoeStorage() *CatboxMoeProvider {
+	log.Println("storage mode => catbox.moe")
 	return &CatboxMoeProvider{
 		ApiUrl: "https://catbox.moe/user/api.php",
 		Client: resty.New(),
