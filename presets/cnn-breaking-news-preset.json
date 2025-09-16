@@ -9,7 +9,7 @@
       "name": "headline",
       "x": 26.3,
       "y": 943.2,
-      "width": 916,
+      "width": 917,
       "height": 71,
       "max_chars": 60,
       "font": "assets/fonts/BebasNeue-Regular.ttf",
@@ -17,7 +17,7 @@
       "line_spacing": 0.0,
       "color": "#000000",
       "align": "left",
-      "padding": 2,
+      "padding": 1,
       "normalize": "toupper"
     }
   ],

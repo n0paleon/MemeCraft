@@ -9,7 +9,6 @@ import (
 	"github.com/alecthomas/kingpin/v2"
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
 	"log"
 )
 
@@ -25,10 +24,10 @@ func main() {
 	}
 
 	app := newFiberApp()
-	_ = storage.NewCatboxMoeStorage()                     // catbox.moe
-	zeroXzeroSTStorage := storage.NewZeroXZeroSTStorage() // 0x0.st
-	memeGenerator := meme.NewGenerator(presetRegistry, zeroXzeroSTStorage)
-	handler := http.NewHandler(memeGenerator, zeroXzeroSTStorage)
+	catboxMoeStorage := storage.NewCatboxMoeStorage() // catbox.moe
+	_ = storage.NewZeroXZeroSTStorage()               // 0x0.st
+	memeGenerator := meme.NewGenerator(presetRegistry, catboxMoeStorage)
+	handler := http.NewHandler(memeGenerator, catboxMoeStorage)
 
 	app.Get("/presets", handler.GetAllPreset)
 	app.Get("/presets/:preset_id", handler.GetPresetById)
@@ -53,14 +52,6 @@ func newFiberApp() *fiber.App {
 		c.Set("Powered-By", "github.com/n0paleon/MemeCraft")
 		return c.Next()
 	})
-	app.Use(cors.New(cors.Config{
-		Next: func(c *fiber.Ctx) bool {
-			return true
-		},
-		AllowOrigins: "*",
-		AllowMethods: "*",
-		AllowHeaders: "*",
-	}))
 
 	return app
 }
