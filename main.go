@@ -57,6 +57,9 @@ func newFiberApp() *fiber.App {
 		Next: func(c *fiber.Ctx) bool {
 			return true
 		},
+		AllowOrigins: "*",
+		AllowMethods: "*",
+		AllowHeaders: "*",
 	}))
 
 	return app
