@@ -15,4 +15,5 @@ type UploadResult struct {
 type StorageProvider interface {
 	Upload(ctx context.Context, data io.Reader) (*UploadResult, error)
 	UploadBytes(ctx context.Context, data []byte) (*UploadResult, error)
+	GetStorageName() string
 }

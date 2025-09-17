@@ -8,10 +8,11 @@ import (
 	"bytes"
 	"context"
 	"errors"
-	"github.com/gofiber/fiber/v2/log"
 	"image"
 	"image/jpeg"
 	"time"
+
+	"github.com/gofiber/fiber/v2/log"
 )
 
 type Generator struct {
@@ -124,6 +125,7 @@ func (g *Generator) GetAllPreset() []*preset.PresetSummary {
 }
 
 func NewGenerator(reg *preset.Registry, storageAdapter port.StorageProvider) *Generator {
+	log.Infof("Storage adapter => %s", storageAdapter.GetStorageName())
 	return &Generator{
 		registry:       reg,
 		storageAdapter: storageAdapter,

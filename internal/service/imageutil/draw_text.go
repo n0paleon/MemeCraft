@@ -2,12 +2,13 @@ package imageutil
 
 import (
 	"fmt"
-	"github.com/fogleman/gg"
 	"image"
 	"image/color"
 	"path/filepath"
 	"strconv"
 	"strings"
+
+	"github.com/fogleman/gg"
 )
 
 type TextBox struct {
@@ -37,21 +38,18 @@ func DrawTextBoxes(base image.Image, text map[string]string, boxes []TextBox) (i
 			continue
 		}
 
-		// normalisasi teks sesuai preset
 		switch strings.ToLower(box.Normalize) {
 		case "tolower":
 			userText = strings.ToLower(userText)
 		case "toupper":
 			userText = strings.ToUpper(userText)
-			// "normal" atau lainnya -> tidak ada perubahan
+			// "normal" atau lainnya -> no normalization
 		}
 
-		// batasi karakter sesuai MaxChars
 		if box.MaxChars > 0 && len(userText) > box.MaxChars {
 			userText = userText[:box.MaxChars]
 		}
 
-		// load font
 		fontSize := box.Size
 		if fontSize == 0 {
 			fontSize = 24
@@ -60,7 +58,6 @@ func DrawTextBoxes(base image.Image, text map[string]string, boxes []TextBox) (i
 			return nil, fmt.Errorf("failed to load font %s: %w", box.Font, err)
 		}
 
-		// warna teks
 		if box.Color != "" {
 			if c, err := hexToColor(box.Color); err == nil {
 				dc.SetColor(c)
@@ -76,7 +73,6 @@ func DrawTextBoxes(base image.Image, text map[string]string, boxes []TextBox) (i
 			padding = 0
 		}
 
-		// area efektif dalam kotak setelah padding
 		effX := box.X + padding
 		effY := box.Y + padding
 		effW := float64(box.Width) - 2*padding
@@ -86,7 +82,7 @@ func DrawTextBoxes(base image.Image, text map[string]string, boxes []TextBox) (i
 			continue
 		}
 
-		// alignment horizontal
+		// text h-alignment
 		align := gg.AlignLeft
 		switch box.Align {
 		case "center":
@@ -95,7 +91,6 @@ func DrawTextBoxes(base image.Image, text map[string]string, boxes []TextBox) (i
 			align = gg.AlignRight
 		}
 
-		// posisi anchor Y di tengah (vertikal)
 		centerX := effX + effW/2
 		centerY := effY + effH/2
 

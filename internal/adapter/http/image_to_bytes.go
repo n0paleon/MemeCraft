@@ -3,9 +3,10 @@ package http
 import (
 	"bytes"
 	"errors"
-	"github.com/go-resty/resty/v2"
 	"io"
 	"net/http"
+
+	"github.com/go-resty/resty/v2"
 )
 
 const MaxImageSize = 2 * 1024 * 1024 // 2MB
@@ -31,9 +32,8 @@ func DownloadImageAsBytes(url string) ([]byte, error) {
 		return nil, errors.New("unsupported content type: " + contentType)
 	}
 
-	// Baca body dengan batas max size
 	var buf bytes.Buffer
-	limitedReader := io.LimitReader(resp.RawBody(), MaxImageSize+1) // +1 untuk cek oversize
+	limitedReader := io.LimitReader(resp.RawBody(), MaxImageSize+1)
 
 	n, err := io.Copy(&buf, limitedReader)
 	if err != nil {

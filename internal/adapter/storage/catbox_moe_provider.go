@@ -5,11 +5,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/go-resty/resty/v2"
 	"io"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/go-resty/resty/v2"
 )
 
 type CatboxMoeProvider struct {
@@ -58,8 +59,11 @@ func (s *CatboxMoeProvider) UploadBytes(ctx context.Context, data []byte) (*port
 	}, nil
 }
 
+func (s *CatboxMoeProvider) GetStorageName() string {
+	return "catbox.moe"
+}
+
 func NewCatboxMoeStorage() *CatboxMoeProvider {
-	log.Println("storage mode => catbox.moe")
 	return &CatboxMoeProvider{
 		ApiUrl: "https://catbox.moe/user/api.php",
 		Client: resty.New(),

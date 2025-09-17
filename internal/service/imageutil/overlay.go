@@ -1,12 +1,12 @@
 package imageutil
 
 import (
-	"github.com/disintegration/imaging"
 	"image"
 	"image/draw"
+
+	"github.com/disintegration/imaging"
 )
 
-// Overlay menempelkan overlay di atas base image dengan koordinat (x,y).
 // mode: "front" (default) atau "back"
 // angle: rotasi overlay dalam derajat (searah jarum jam)
 func Overlay(base image.Image, overlay image.Image, x, y int, mode string, angle float64) image.Image {

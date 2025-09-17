@@ -6,10 +6,11 @@ import (
 	"MemeCraft/internal/preset"
 	"MemeCraft/internal/service/meme"
 	"fmt"
+	"log"
+
 	"github.com/alecthomas/kingpin/v2"
 	"github.com/bytedance/sonic"
 	"github.com/gofiber/fiber/v2"
-	"log"
 )
 
 var (

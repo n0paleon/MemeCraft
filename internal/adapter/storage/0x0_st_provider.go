@@ -6,11 +6,12 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"github.com/go-resty/resty/v2"
 	"io"
 	"log"
 	"net/http"
 	"strings"
+
+	"github.com/go-resty/resty/v2"
 )
 
 type ZeroXZeroSTProvider struct {
@@ -59,8 +60,11 @@ func (s *ZeroXZeroSTProvider) UploadBytes(ctx context.Context, data []byte) (*po
 	}, nil
 }
 
+func (s *ZeroXZeroSTProvider) GetStorageName() string {
+	return "0x0.st"
+}
+
 func NewZeroXZeroSTStorage() *ZeroXZeroSTProvider {
-	log.Println("storage mode => 0x0.st")
 	return &ZeroXZeroSTProvider{
 		ApiUrl: "https://0x0.st",
 		Client: resty.New(),
